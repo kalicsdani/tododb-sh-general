@@ -50,7 +50,7 @@ if [ "$?" = 0 ]; then
 fi
 }
 
-main() {
+main2() {
     if [[ -z "$1" ]]
     then
         echo "Please add a parameter! Use one of the following: 'add-user [name]', 'add-todo [name] [task]'." && exit 1

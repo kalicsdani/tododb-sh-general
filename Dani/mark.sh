@@ -57,13 +57,13 @@ if [ "$?" -eq 0 ]; then
 fi
 }
 
-main() {
+main3() {
     if [[ -z "$2" ]]
     then
-        echo "Please add a parameter! Use one of the following: 'mark-todo [task id]', 'aunmark-todo [task id]'." && exit 1
+        echo "Please add a parameter! Use one of the following: 'mark-todo [task id]', 'unmark-todo [task id]'." && exit 1
     elif [[ "$1" != "mark-todo" && "$1" != "unmark-todo" ]]
     then
-        echo "No such parameter! Use one of the following: 'mark-todo [task id]', 'aunmark-todo [task id]'."  && exit 1
+        echo "No such parameter! Use one of the following: 'mark-todo [task id]', 'unmark-todo [task id]'."  && exit 1
     elif [[ "$1" == "mark-todo" ]]
     then
         mark_todo "$2"

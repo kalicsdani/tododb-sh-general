@@ -32,7 +32,7 @@ WHERE name = '$1';
 EOF
 }
 
-main() {
+main1() {
     if [[ -z "$1" ]]
     then
         echo "Please add a parameter! Use one of the following: 'list-users', 'list-todos', 'list-user-todos [name]'." && exit 1
