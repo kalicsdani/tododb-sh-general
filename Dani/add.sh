@@ -15,22 +15,25 @@
 # szemét volt, nem kaptam vissza a hibaüzenetet a változóba csak üresen
 # muszáj megállítani, különben 
 
-set -e #megálltja a scriptet ha hiba van
+#set -e #megálltja a scriptet ha hiba van
 
 add_user() {
-    psql -d ubuntu -tq -v ON_ERROR_STOP=on<<EOF
+    psql -d ubuntu -tq -v ON_ERROR_STOP=on 2>&1 <<EOF
 INSERT INTO "user" (name) VALUES ('$1');
 EOF
 adduseroutput=$?
 if [ "$adduseroutput" -eq 0 ]; then
-  echo "Name successfully added!"
+    echo "Name successfully added!"
+else
+    echo "Something went wrong details above!"
 fi
+
 }
 
-add_todo() {
+add_todo() { #javítani
 psql -d ubuntu -tq -v ON_ERROR_STOP=on<<EOF
 INSERT INTO "user" (name) VALUES ('$1');
-EOF
+EOF #javítani
 #addusertodooutput=$?
 
 newuserid=$(psql -d ubuntu -tq <<EOF

@@ -28,7 +28,7 @@ list_user_todos() {
 SELECT name, task, done
 FROM "user"
 INNER JOIN todo ON "user".id = todo.user_id
-WHERE name ILIKE '$1';
+WHERE name = '$1';
 EOF
 }
 
