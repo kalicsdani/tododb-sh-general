@@ -7,7 +7,7 @@
 #    mark.sh mark-todo 32
 #    mark.sh unmark-todo 32
 #
-set -e
+#set -e
 
 mark_todo() {
 a=$(psql -d ubuntu -tqA -v ON_ERROR_STOP=on<<EOF
@@ -15,45 +15,56 @@ SELECT done
 FROM todo
 WHERE id='$1';
 EOF
-echo "$a"
 )
-if [[ "$a" = 't' ]]; then #[ "$a" -n ] && 
-    echo "Task #$1 is already set to done..."&& exit 0 
+if [[ "$a" = 't' ]]
+then    
+    echo "Task #$1 is already set to done..." && exit 1 
+elif [[ -z "$a" ]]
+then
+    echo "Task #$1 is not existing...choose another one." && exit 1
 fi
     psql -d ubuntu -tq -v ON_ERROR_STOP=on<<EOF
 UPDATE todo
 SET done=true
 WHERE id='$1';
 EOF
-marktodooutput=$?
-if [ "$marktodooutput" -eq 0 ]; then
+if [ "$?" -eq 0 ]; then
   echo "Task #$1 marked as done!"
 fi
 }
 
 unmark_todo() {
-a=$(psql -d ubuntu -tqA -v ON_ERROR_STOP=on<<EOF
+b=$(psql -d ubuntu -tqA -v ON_ERROR_STOP=on<<EOF
 SELECT done
 FROM todo
 WHERE id='$1';
 EOF
 )
-if [[ "$a" == 'f' ]]; then
-    echo "Task #$1 is already set to undone..."&& exit 0
+if [[ "$b" = 'f' ]]
+then    
+    echo "Task #$1 is already set to undone..." && exit 1 
+elif [[ -z "$b" ]]
+then
+    echo "Task #$1 is not existing...choose another one." && exit 1
 fi
     psql -d ubuntu -tq -v ON_ERROR_STOP=on<<EOF
 UPDATE todo
 SET done=false
 WHERE id='$1';
 EOF
-marktodooutput=$?
-if [ "$marktodooutput" -eq 0 ]; then
+if [ "$?" -eq 0 ]; then
   echo "Task #$1 marked as undone!"
 fi
 }
 
 main() {
-    if [[ "$1" == "mark-todo" ]]
+    if [[ -z "$2" ]]
+    then
+        echo "Please add a parameter! Use one of the following: 'mark-todo [task id]', 'aunmark-todo [task id]'." && exit 1
+    elif [[ "$1" != "mark-todo" && "$1" != "unmark-todo" ]]
+    then
+        echo "No such parameter! Use one of the following: 'mark-todo [task id]', 'aunmark-todo [task id]'."  && exit 1
+    elif [[ "$1" == "mark-todo" ]]
     then
         mark_todo "$2"
     elif [[ "$1" == "unmark-todo" ]]

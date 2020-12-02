@@ -33,7 +33,13 @@ EOF
 }
 
 main() {
-    if [[ "$1" == "list-users" ]]
+    if [[ -z "$1" ]]
+    then
+        echo "Please add a parameter! Use one of the following: 'list-users', 'list-todos', 'list-user-todos [name]'." && exit 1
+    elif [[ "$1" != "list-users" && "$1" != "list-todos" && "$1" != "list-user-todos" ]]
+    then
+        echo "No such parameter! Use one of the following: 'list-users', 'list-todos', 'list-user-todos [name]'." 
+    elif [[ "$1" == "list-users" ]]
     then
         list_users
     elif [[ "$1" == "list-todos" ]]
