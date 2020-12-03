@@ -1,0 +1,13 @@
+DROP TABLE IF EXISTS "user";
+CREATE TABLE IF NOT EXISTS "user" (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(50) UNIQUE
+);
+
+DROP TABLE IF EXISTS todo;
+CREATE TABLE IF NOT EXISTS todo (
+    id SERIAL PRIMARY KEY,
+    task VARCHAR(100),
+    user_id INTEGER REFERENCES "user"(id),
+    done BOOLEAN DEFAULT false
+);

@@ -11,18 +11,36 @@
 #    list.sh list-user-todos "John Doe"
 #
 
-list_users() {
-    psql <<EOF
-SELECT * FROM "user"
+list_users() { 
+    user_result=$(psql -d tododbsh  -q -t <<EOF
+    SELECT * FROM "user"
 EOF
+)
+echo "$user_result"
 }
 
-list_todos() {
-    echo "Your code"
+list_todos()  { 
+    todo_result=$(psql -d tododbsh -q -t <<EOF
+    SELECT * FROM todo;
+EOF
+)
+echo "$todo_result"
 }
 
 list_user_todos() {
-    echo "User: $1"
+    todo_user_result=$(psql -d tododbsh -q -t <<EOF
+    SELECT "user".name , task , done FROM todo
+    JOIN "user" on "user".id = todo.user_id
+    where "user".name = '$1';
+EOF
+)
+    if 
+    [ -z "$todo_user_result" ]
+    then 
+        echo " $1 doesn't exist!"
+    else
+        echo "$todo_user_result"
+    fi
 }
 
 main() {
