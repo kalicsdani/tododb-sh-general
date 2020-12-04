@@ -18,7 +18,10 @@
 #set -e #megálltja a scriptet ha hiba van
 
 add_user() {
-
+if [ -z "$1" ]
+then
+   echo "Please add a parameter! Use one of the following: 'add-user [name]', 'add-todo [name] [task]'." && exit 1
+fi
 adduseroutput=$(psql -d ubuntu -tq -v ON_ERROR_STOP=on 2>&1 <<EOF
 INSERT INTO "user" (name) VALUES ('$1');
 EOF
@@ -28,7 +31,6 @@ if [ -z "$adduseroutput" ]; then
 else
     echo -e "Something went wrong, see details:\n$adduseroutput" && exit 1 # echo -e a newline miatt, különben megjeleníti
 fi
-
 }
 
 add_todo() { 
@@ -51,7 +53,7 @@ fi
 }
 
 main2() {
-    if [[ -z "$1" ]]
+    if [ -z "$2" ] ## && [ -z "$2" ];
     then
         echo "Please add a parameter! Use one of the following: 'add-user [name]', 'add-todo [name] [task]'." && exit 1
     elif [[ "$1" != "add-user" && "$1" != "add-todo" ]]
@@ -71,5 +73,5 @@ main2() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-    main "$@"
+    main2 "$@"
 fi

@@ -59,6 +59,6 @@ main4() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-    main "$@"
+    main4 "$@"
 fi
 

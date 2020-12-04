@@ -75,5 +75,5 @@ main3() {
 
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]
 then
-    main "$@"
+    main3 "$@"
 fi
